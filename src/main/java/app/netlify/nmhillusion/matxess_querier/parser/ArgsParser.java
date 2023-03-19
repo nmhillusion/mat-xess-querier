@@ -18,13 +18,13 @@ public class ArgsParser {
             throw new InvalidArgument("args is empty");
         }
 
-        if (3 > args.length) {
+        if (2 > args.length) {
             throw new InvalidArgument("args must have at least 2 arguments");
         }
 
         return new MsAccessQueryModel()
-                .setDatabaseFilePath(args[1])
-                .setQueryStatement(args[2])
+                .setDatabaseFilePath(args[0])
+                .setQueryStatement(args[1])
                 ;
     }
 }

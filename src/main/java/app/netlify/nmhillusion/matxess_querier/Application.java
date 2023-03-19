@@ -4,12 +4,11 @@ import app.netlify.nmhillusion.matxess_querier.model.MsAccessQueryModel;
 import app.netlify.nmhillusion.matxess_querier.model.MsAccessQueryResultModel;
 import app.netlify.nmhillusion.matxess_querier.parser.ArgsParser;
 import app.netlify.nmhillusion.matxess_querier.service.MsAccessQueryService;
+import app.netlify.nmhillusion.n2mix.exception.GeneralException;
 import app.netlify.nmhillusion.n2mix.exception.InvalidArgument;
 import app.netlify.nmhillusion.n2mix.helper.log.LogHelper;
 import app.netlify.nmhillusion.neon_di.NeonEngine;
 import app.netlify.nmhillusion.neon_di.exception.NeonException;
-
-import java.util.Optional;
 
 /**
  * date: 2023-03-19
@@ -33,23 +32,14 @@ public class Application {
         return NEON_ENGINE;
     }
 
-    public static void main(String[] args) throws InvalidArgument {
+    public static void main(String[] args) throws InvalidArgument, GeneralException {
         final Application app = new Application();
         app.run(args);
     }
 
-    private <T> T makeSureObtainNeon(Class<T> clazz2Obtain) {
-        final Optional<T> neonByClass = NEON_ENGINE.findFirstNeonByClass(clazz2Obtain);
-        if (neonByClass.isEmpty()) {
-            throw new RuntimeException("Cannot find instance of " + clazz2Obtain);
-        }
-
-        return neonByClass.get();
-    }
-
-    private void run(String[] args) throws InvalidArgument {
-        final ArgsParser argsParser = makeSureObtainNeon(ArgsParser.class);
-        final MsAccessQueryService msAccessQueryService = makeSureObtainNeon(MsAccessQueryService.class);
+    private void run(String[] args) throws InvalidArgument, GeneralException {
+        final ArgsParser argsParser = NEON_ENGINE.makeSureObtainNeon(ArgsParser.class);
+        final MsAccessQueryService msAccessQueryService = NEON_ENGINE.makeSureObtainNeon(MsAccessQueryService.class);
 
 
         final MsAccessQueryModel msAccessQueryModel = argsParser.parser(args);

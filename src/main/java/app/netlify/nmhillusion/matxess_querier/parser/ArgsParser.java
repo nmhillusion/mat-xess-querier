@@ -22,9 +22,15 @@ public class ArgsParser {
             throw new InvalidArgument("args must have at least 2 arguments");
         }
 
+        String resultOutputFilePath = "out.json";
+
+        if (3 <= args.length) {
+            resultOutputFilePath = args[2];
+        }
+
         return new MsAccessQueryModel()
                 .setDatabaseFilePath(args[0])
                 .setQueryStatement(args[1])
-                ;
+                .setResultOutputFilePath(resultOutputFilePath);
     }
 }

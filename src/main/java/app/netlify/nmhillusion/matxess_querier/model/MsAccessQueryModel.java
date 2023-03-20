@@ -11,6 +11,7 @@ import app.netlify.nmhillusion.n2mix.type.Stringeable;
 public class MsAccessQueryModel extends Stringeable {
     private String databaseFilePath;
     private String queryStatement;
+    private String resultOutputFilePath;
 
     public String getDatabaseFilePath() {
         return databaseFilePath;
@@ -27,6 +28,15 @@ public class MsAccessQueryModel extends Stringeable {
 
     public MsAccessQueryModel setQueryStatement(String queryStatement) {
         this.queryStatement = queryStatement;
+        return this;
+    }
+
+    public String getResultOutputFilePath() {
+        return resultOutputFilePath;
+    }
+
+    public MsAccessQueryModel setResultOutputFilePath(String resultOutputFilePath) {
+        this.resultOutputFilePath = resultOutputFilePath;
         return this;
     }
 }

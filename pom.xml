@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.1</junit.version>
         <java.version>17</java.version>
-        <main.class>app.netlify.nmhillusion.matxess_querier.Application</main.class>
+        <main.class>app.netlify.nmhillusion.matxess_querier.Querier</main.class>
     </properties>
 
     <dependencies>

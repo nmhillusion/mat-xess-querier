@@ -9,6 +9,13 @@ import app.netlify.nmhillusion.n2mix.exception.InvalidArgument;
 import app.netlify.nmhillusion.n2mix.helper.log.LogHelper;
 import app.netlify.nmhillusion.neon_di.NeonEngine;
 import app.netlify.nmhillusion.neon_di.exception.NeonException;
+import app.netlify.nmhillusion.pi_logger.PiLoggerFactory;
+import app.netlify.nmhillusion.pi_logger.constant.LogLevel;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * date: 2023-03-19
@@ -16,13 +23,15 @@ import app.netlify.nmhillusion.neon_di.exception.NeonException;
  * created-by: nmhillusion
  */
 
-public class Application {
+public class Querier {
     private static final NeonEngine NEON_ENGINE = new NeonEngine();
 
     static {
         try {
             NEON_ENGINE
-                    .run(Application.class);
+                    .run(Querier.class);
+            PiLoggerFactory.getDefaultLogConfig()
+                    .setLogLevel(LogLevel.INFO);
         } catch (NeonException e) {
             throw new RuntimeException(e);
         }
@@ -32,12 +41,12 @@ public class Application {
         return NEON_ENGINE;
     }
 
-    public static void main(String[] args) throws InvalidArgument, GeneralException {
-        final Application app = new Application();
+    public static void main(String[] args) throws InvalidArgument, GeneralException, IOException {
+        final Querier app = new Querier();
         app.run(args);
     }
 
-    private void run(String[] args) throws InvalidArgument, GeneralException {
+    private void run(String[] args) throws InvalidArgument, GeneralException, IOException {
         final ArgsParser argsParser = NEON_ENGINE.makeSureObtainNeon(ArgsParser.class);
         final MsAccessQueryService msAccessQueryService = NEON_ENGINE.makeSureObtainNeon(MsAccessQueryService.class);
 
@@ -46,5 +55,11 @@ public class Application {
         final MsAccessQueryResultModel msAccessQueryResultModel = msAccessQueryService.doQuery(msAccessQueryModel);
 
         LogHelper.getLogger(this).infoFormat("result of query: %s", msAccessQueryResultModel);
+
+        try (final FileOutputStream fos = new FileOutputStream(msAccessQueryModel.getResultOutputFilePath());
+             final BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+            bos.write(msAccessQueryResultModel.toJson().toString().getBytes(StandardCharsets.UTF_8));
+            bos.flush();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package app.netlify.nmhillusion.matxess_querier.model;
 
 import app.netlify.nmhillusion.n2mix.type.Stringeable;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -30,5 +31,14 @@ public class MsAccessQueryResultModel extends Stringeable {
     public MsAccessQueryResultModel setTableData(List<List<Object>> tableData) {
         this.tableData = tableData;
         return this;
+    }
+
+    public JSONObject toJson() {
+        final JSONObject jsonObject_ = new JSONObject();
+
+        jsonObject_.put("columnNames", columnNames);
+        jsonObject_.put("tableData", tableData);
+
+        return jsonObject_;
     }
 }

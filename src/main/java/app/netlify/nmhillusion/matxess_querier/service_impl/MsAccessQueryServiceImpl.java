@@ -6,6 +6,9 @@ import app.netlify.nmhillusion.matxess_querier.service.MsAccessQueryService;
 import app.netlify.nmhillusion.n2mix.exception.GeneralException;
 import app.netlify.nmhillusion.neon_di.annotation.Neon;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +39,15 @@ public class MsAccessQueryServiceImpl implements MsAccessQueryService {
     }
 
     @Override
-    public MsAccessQueryResultModel doQuery(MsAccessQueryModel queryModel) throws GeneralException {
+    public MsAccessQueryResultModel doQuery(MsAccessQueryModel queryModel) throws GeneralException, IOException {
         String connectionString = "jdbc:ucanaccess://@pathToAccessDbFile;memory=false";
         connectionString = connectionString.replace("@pathToAccessDbFile", queryModel.getDatabaseFilePath())
         ;
 
+        final String queryFilePath = queryModel.getQueryFilePath();
+        final String queryStatement = Files.readString(Paths.get(queryFilePath));
         try (final Connection connection_ = DriverManager.getConnection(connectionString);
-             final PreparedStatement preparedStatement_ = connection_.prepareStatement(queryModel.getQueryFilePath());
+             final PreparedStatement preparedStatement_ = connection_.prepareStatement(queryStatement);
              final ResultSet resultSet = preparedStatement_.executeQuery()
         ) {
             final List<String> columnNames = getColumnNamesOfResultSet(resultSet);

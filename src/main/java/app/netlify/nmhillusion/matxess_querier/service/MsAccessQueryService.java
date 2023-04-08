@@ -4,6 +4,8 @@ import app.netlify.nmhillusion.matxess_querier.model.MsAccessQueryModel;
 import app.netlify.nmhillusion.matxess_querier.model.MsAccessQueryResultModel;
 import app.netlify.nmhillusion.n2mix.exception.GeneralException;
 
+import java.io.IOException;
+
 /**
  * date: 2023-03-19
  * <p>
@@ -11,5 +13,5 @@ import app.netlify.nmhillusion.n2mix.exception.GeneralException;
  */
 
 public interface MsAccessQueryService {
-    MsAccessQueryResultModel doQuery(MsAccessQueryModel queryModel) throws GeneralException;
+    MsAccessQueryResultModel doQuery(MsAccessQueryModel queryModel) throws GeneralException, IOException;
 }

@@ -42,7 +42,7 @@ public class MsAccessQueryServiceImpl implements MsAccessQueryService {
         ;
 
         try (final Connection connection_ = DriverManager.getConnection(connectionString);
-             final PreparedStatement preparedStatement_ = connection_.prepareStatement(queryModel.getQueryStatement());
+             final PreparedStatement preparedStatement_ = connection_.prepareStatement(queryModel.getQueryFilePath());
              final ResultSet resultSet = preparedStatement_.executeQuery()
         ) {
             final List<String> columnNames = getColumnNamesOfResultSet(resultSet);

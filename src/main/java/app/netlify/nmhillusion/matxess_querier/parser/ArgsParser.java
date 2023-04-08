@@ -30,7 +30,7 @@ public class ArgsParser {
 
         return new MsAccessQueryModel()
                 .setDatabaseFilePath(args[0])
-                .setQueryStatement(args[1])
+                .setQueryFilePath(args[1])
                 .setResultOutputFilePath(resultOutputFilePath);
     }
 }

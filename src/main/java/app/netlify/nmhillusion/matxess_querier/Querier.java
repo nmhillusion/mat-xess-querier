@@ -56,7 +56,7 @@ public class Querier {
 
         LogHelper.getLogger(this).infoFormat("result of query: %s", msAccessQueryResultModel);
 
-        try (final FileOutputStream fos = new FileOutputStream(msAccessQueryModel.getResultOutputFilePath());
+        try (final FileOutputStream fos = new FileOutputStream(msAccessQueryModel.getResultOutputFilePath(), false);
              final BufferedOutputStream bos = new BufferedOutputStream(fos)) {
             bos.write(msAccessQueryResultModel.toJson().toString().getBytes(StandardCharsets.UTF_8));
             bos.flush();
